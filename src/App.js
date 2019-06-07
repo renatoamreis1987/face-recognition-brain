@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import Particles from "react-particles-js";
-import Clarifai from "clarifai";
+import Particles from "react-particles-js"; //This is related with the animated background
+import Clarifai from "clarifai"; //This is related with the API
 import Navigation from "./components/Navigation/Navigation";
 import FaceRecognition from "./components/FaceRecognition/FaceRecognition";
 import Signin from "./components/Signin/Signin";
@@ -10,9 +10,11 @@ import ImageLinkForm from "./components/ImageLinkForm/ImageLinkForm";
 import Rank from "./components/Rank/Rank";
 import "./App.css";
 
+
 const app = new Clarifai.App({
   apiKey: "0c081cda46a448468c6c184c146747c5"
 });
+
 
 class App extends Component {
   constructor() {
@@ -26,6 +28,7 @@ class App extends Component {
     };
   }
 
+  
   //calculateFaceLocation() is to get the data about face location
   //And we do the calculations to get the location for the face <div>
   calculateFaceLocation = (data) => {
@@ -45,10 +48,12 @@ class App extends Component {
     }
   }
 
+  //This is to store the cordinates of the FaceBox
   displayFaceBox = (box) => {
     this.setState({box: box})
   }
 
+  //This is to get the link
   onInputChange = event => {
     this.setState({input: event.target.value});
   };
@@ -67,6 +72,7 @@ class App extends Component {
       .catch(err => console.log(err));
   };
 
+  //This is to handle the Routes if is SignedIn, or Out. However is on the server side that we will handle authentication.  
   onRouteChange = (route) => {
     if (route === 'signout') {
       this.setState({isSignedIn: false})
@@ -77,6 +83,7 @@ class App extends Component {
   }
 
   render() {
+    //Line bellow is to avoid that we write all the time "this.state.isSignedIn" for example
     const { isSignedIn, imageUrl, route, box } = this.state
     return (
       <div className="App">
