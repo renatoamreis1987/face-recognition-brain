@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Particles from "react-particles-js"; //This is related with the animated background
-import Clarifai from "clarifai"; //This is related with the API
 import Navigation from "./components/Navigation/Navigation";
 import FaceRecognition from "./components/FaceRecognition/FaceRecognition";
 import Signin from "./components/Signin/Signin";
@@ -10,29 +9,27 @@ import ImageLinkForm from "./components/ImageLinkForm/ImageLinkForm";
 import Rank from "./components/Rank/Rank";
 import "./App.css";
 
-//This is related with the IA App, face detection. Is the API key to access
-const app = new Clarifai.App({
-  apiKey: "0c081cda46a448468c6c184c146747c5"
-});
+
+const initalState = {
+    input: "",
+    imageUrl: "",
+    box: {},
+    route: "signin",
+    isSignedIn: false,
+    user: {
+      id: "",
+      name: "",
+      email: "",
+      entries: 0,
+      joined: ""
+  }
+}
 
 //Bellow are the STATE that will change with the code
 class App extends Component {
   constructor() {
     super();
-    this.state = {
-      input: "",
-      imageUrl: "",
-      box: {},
-      route: "signin",
-      isSignedIn: false,
-      user: {
-        id: "",
-        name: "",
-        email: "",
-        entries: 0,
-        joined: ""
-      }
-    };
+    this.state = initalState
   }
 
   //This is a function, from where we retrieve in Register & Signin the user details
@@ -80,9 +77,14 @@ class App extends Component {
 
 
   onButtonSubmit = () => {
-    this.setState({ imageUrl: this.state.input });
-    app.models
-      .predict("e466caa0619f444ab97497640cefc4dc", this.state.input)
+    this.setState({ imageUrl: this.state.input })
+      fetch("http://localhost:3000/imageurl", {
+        method: "post",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          input: this.state.input
+        })
+      }).then(response => response.json())
       //calculateFaceLocation() is to get the data about face location
       //displayFaceBox() is to pass the returned values to state.box
       //The values from state.box are useful to create the div in "FaceRecgnition.js"
@@ -100,8 +102,8 @@ class App extends Component {
             .then(response => response.json())
             .then(count => {
               this.setState(Object.assign(this.state.user, { entries: count }))
-    
-            });
+            })
+            .catch(console.log)
         }
         this.displayFaceBox(this.calculateFaceLocation(response));
       })
@@ -111,7 +113,7 @@ class App extends Component {
   //This is to handle the Routes if is SignedIn, or Out. However is on the server side that we will handle authentication.
   onRouteChange = route => {
     if (route === "signout") {
-      this.setState({ isSignedIn: false });
+      this.setState(initalState);
     } else if (route === "home") {
       this.setState({ isSignedIn: true });
     }
