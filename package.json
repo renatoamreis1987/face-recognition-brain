@@ -2,6 +2,9 @@
   "name": "face-recognition-brain",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "10.16.0"
+  },
   "dependencies": {
     "clarifai": "^2.9.0",
     "react": "^16.8.6",
