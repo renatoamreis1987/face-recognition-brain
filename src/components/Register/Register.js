@@ -27,7 +27,7 @@ class Register extends React.Component {
   //We receive back a response with the user. This is defined in the API (NodeJS)
   //With the response back, we execute loadUser with the user details. 
   onSubmitSignIn = () => {
-    fetch('http://localhost:3000/register', {
+    fetch('https://smart-brain-renato.herokuapp.com/register', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({

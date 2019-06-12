@@ -23,7 +23,7 @@ class Signin extends React.Component {
   //We receive back a response with the user. This is defined in the API (NodeJS)
   //With the response back, we execute loadUser with the user details. And change route 
   onSubmitSignIn = () => {
-    fetch('http://localhost:3000/signin', {
+    fetch('https://smart-brain-renato.herokuapp.com/signin', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({

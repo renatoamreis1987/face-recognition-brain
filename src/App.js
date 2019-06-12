@@ -75,10 +75,11 @@ class App extends Component {
     this.setState({ input: event.target.value });
   };
 
-
+  /* WE NOW HIDE THE API ON THE BACK-END, WE SEND THE INFO TO BACK END */
+  /* AND WE RETRIEVE THAT INFORMATION BACK */
   onButtonSubmit = () => {
     this.setState({ imageUrl: this.state.input })
-      fetch("http://localhost:3000/imageurl", {
+      fetch("https://smart-brain-renato.herokuapp.com/imageurl", {
         method: "post",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -89,10 +90,9 @@ class App extends Component {
       //displayFaceBox() is to pass the returned values to state.box
       //The values from state.box are useful to create the div in "FaceRecgnition.js"
       //On the 'fetch' bellow we are calculating the number of entries
-      //We send to API user.id, API will do entries++ and return the total count of entries
       .then(response => {
         if (response) {
-          fetch("http://localhost:3000/image", {
+          fetch("https://smart-brain-renato.herokuapp.com/image", {
             method: "put",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
